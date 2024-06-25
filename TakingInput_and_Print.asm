@@ -1,0 +1,23 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+.CODE
+
+MAIN PROC
+    MOV AH,01H
+    INT 21H     ;INPUT
+    MOV BL,AL
+    
+    MOV AH,02H
+    MOV DL,10    ;NEW LINE PRINT
+    INT 21H
+    
+    MOV AH,02H
+    MOV DL,13    ;CARRIGE RETURN 
+    INT 21H
+    
+    MOV AH,02H
+    MOV DL,BL    ;OUTPUT
+    INT 21H
+    MAIN ENDP
+END MAIN
