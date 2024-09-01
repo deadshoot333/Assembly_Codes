@@ -1,0 +1,65 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+MSG1 DB "Enter The String: $" 
+MSG4 DB 0DH, 0AH, "$"
+MSG5 DB "Palindrome $"
+MSG6 DB "Not Palindrome $"
+ARR DB 20 DUP(?)
+.CODE
+
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    LEA DX,MSG1
+    MOV AH,09H
+    INT 21H
+    
+    MOV CX,0H
+    
+    LEA SI,ARR
+    MOV AH,01H 
+    
+ARRAY_IN:
+    INT 21H
+    CMP AL,0DH
+    JE BREAK
+    MOV [SI],AL
+    INC SI
+    INC CX
+    JMP ARRAY_IN
+BREAK: 
+    DEC SI
+    
+    MOV AH,02H
+    MOV DL,0DH
+    INT 21H
+    MOV AH,02H
+    MOV DL,0AH
+    INT 21H
+    MOV DI,OFFSET ARR
+ARRAY_REV:
+    MOV DL,[SI]
+    MOV DH,[DI]
+    CMP DH,DL
+    JNE NOT_PAL
+    DEC SI
+    INC DI
+LOOP ARRAY_REV
+PAL:
+    LEA DX,MSG5
+    MOV AH,09H
+    INT 21H
+    JMP EXIT_
+NOT_PAL:
+    LEA DX,MSG6
+    MOV AH,09H
+    INT 21H
+    JMP EXIT_
+EXIT_:
+    MOV AH,4CH
+    INT 21H
+MAIN ENDP
+END MAIN
+        
