@@ -1,0 +1,31 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+.CODE
+
+MAIN PROC
+    MOV AH,01H
+    INT 21H
+    MOV BL,AL
+    
+    MOV AH,02H
+    MOV DL,10H
+    INT 21H     ;NEWLINE AND CARRIGE RETURN (HAVING ISSUES)
+    MOV DL,13
+    INT 21H
+    
+    MOV CL,'1'  ;1 MOVED AS CHAR SO THAT WE CAN SEE '1' IN TERMINAL
+    FOR:
+        CMP CL,BL
+        JG EXIT    ;JG IS JUMP IS GREATER
+        MOV AH,02H
+        MOV DL,CL
+        INT 21H
+        
+        INC CL
+        JMP FOR:
+    EXIT:
+    MOV AH,4CH
+    INT 21H
+    MAIN ENDP
+END MAIN
